@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+  <link rel="stylesheet" type="text/css" href="titanicfin.css">
+  <link href="https://fonts.googleapis.com/css?family=Anaheim&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+	<!-- Javascript SDK-->
+  <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script> 
+  <script src="js/amazon-cognito-auth.min.js"></script>
+  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script> 
+  <script src="js/amazon-cognito-identity.min.js"></script>  
+  <script src="js/config.js"></script>
+  </head>
+
+  <body>
+	<div class="header">
+		<h1 style="overflow:hidden;">Welcome to Titanic Financial</h1>
+	</div>
+	<img src="titanic.png" alt="Titanic Financial" style="width:40%;height:100%;margin:6% 6% 0% 3%;">
+	<div class="column" style="margin:10% 3% 0 6%;">
+			<h1>Please sign in</h1>
+			<label id=Username>Username</label>
+			<input type="text" id="inputUsername" name="username" required autofocus>
+			<label id=Password>Password</label>
+			<input type="password" id="inputPassword" name="password" required>    
+			<button type="button" onclick="signInButton()">Sign in</button>
+			<a href="register.html">Don't have an account? Register here</a>
+	</div>
+
+	<script>
+		var username;
+		var password;
+		var personalname;
+		var poolData;
+
+		function signInButton() {
+    
+		var authenticationData = {
+					Username : document.getElementById("inputUsername").value,
+					Password : document.getElementById("inputPassword").value,
+			};
+		
+			var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+			
+		var poolData = {
+					UserPoolId : _config.cognito.userPoolId, // Your user pool id here
+					ClientId : _config.cognito.clientId, // Your client id here
+			};
+		
+			var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+		
+			var userData = {
+					Username : document.getElementById("inputUsername").value,
+					Pool : userPool,
+			};
+		
+			var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+			
+		cognitoUser.authenticateUser(authenticationDetails, {
+					onSuccess: function (result) {
+						self.location="bank.html";
+				var accessToken = result.getAccessToken().getJwtToken();
+				console.log(accessToken);	
+				console.log("Great sucess");
+					},
+					onFailure: function(err) {
+							alert(err.message || JSON.stringify(err));
+					},
+			});
+		}
+	
+	</script>
+ 
+ </body>
+  
+</html>

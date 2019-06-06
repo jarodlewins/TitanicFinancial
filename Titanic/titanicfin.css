@@ -1,0 +1,65 @@
+
+html
+{ height: 100%;}
+
+*
+{ margin: 0;
+  padding: 0;}
+
+body{
+	font-family: 'Anaheim'; 
+	color: black;
+	font-size: 22px;
+	background-color: #222222;
+}
+
+label {
+	display: block;
+	margin: 5px 10px;
+}
+
+.header{
+	overflow: hidden;
+	background-color: #6077CC;
+	color: white;
+	height: 50px;
+}
+
+.column {
+	float: left;
+	background-color: white;
+	padding: 10px;
+	width: 40%;
+	margin: 6% 3% 0 6%;
+}
+
+a:link, a:visited {
+	text-decoration: none;
+	font-family: 'Anaheim';
+	display: inline-block;
+	color: #6077CC;
+}
+
+input {
+	display: inline-block;
+	width: 80%;
+	border: 3px solid #808080;
+	transition: 0.5s;
+	outline: none;
+	padding: 12px 20px;
+	margin: auto;
+}
+
+input:focus {
+	border: 3px solid #353535;
+}
+
+button {
+	font-family: 'Anaheim';
+	background-color: #6077CC;
+	color: white;
+	margin: 5px 4%;
+	padding: 10px 15px;
+	font-size: 24px;
+	border: none;
+}
