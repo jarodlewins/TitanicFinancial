@@ -63,6 +63,8 @@
 				var accessToken = result.getAccessToken().getJwtToken();
 				console.log(accessToken);	
 				console.log("Great sucess");
+				localStorage.setItem('userName', userData.Username);
+				window.location.replace("/Users/bryan/Documents/GitHub/TitanicFinancial/Titanic/bank.html");
 					},
 					onFailure: function(err) {
 							alert(err.message || JSON.stringify(err));

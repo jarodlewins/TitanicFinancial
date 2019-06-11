@@ -4,47 +4,63 @@
       <title>Vue Demo #1: The Box App</title>
       <meta charset='utf-8' />
       <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-      <style type="text/css">
-        .box {
-          height: 200px;
-          width: 200px; 
-          text-align: center;
-        }
-        .red {
-          background-color: red;
-        }
-        .green {
-          background-color: green;
-        }
-      </style>  
+      
     </head>
     <body>
-      <h1>Vue Demo #1</h1>
-      <div id="vapp">
-          <colored-box class="red" v-show="display == 'redbox'"></colored-box>
-          <colored-box class="green" v-show="display == 'greenbox'"></colored-box>
-      </div>
+
+      <h1>Hello Welcome </h1>
+
+      <h3 id="checkingBalance"></h3>
+
+      
+
+
+
+
+      
     <!-- Our View App goes at the end of the document -->
     <script>
-    Vue.component('ColoredBox', {
-      template: "<div class=\"box\"><button v-on:click=\"toggleMe()\">Toggle Now</button></div>",
-      methods: {
-        toggleMe() {
-          this.$root.toggleBox()
-        }
-      }
-    })
-    const vueApp = new Vue({
-      el: '#vapp',
-      data: { 
-       display: 'redbox' 
-      },
-      methods: {
-        toggleBox() {
-          this.display == 'redbox' ? this.display = 'greenbox' : this.display = 'redbox'
-        }
-      }
-    })
+
+
+var userName =  localStorage.getItem("userName");
+console.log("UserName is: " + userName);
+
+
+
+var proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+  
+
+const url = proxyUrl + 'https://iymekn1toa.execute-api.us-east-1.amazonaws.com/beta/getuserdata';
+			// The data we are going to send in our request
+			let data = {
+					userNameKey: userName
+			}
+			// The parameters we are gonna pass to the fetch function
+			let fetchData = { 
+					method: 'POST', 
+          body: data.userNameKey.toString(),
+          mode:'cors',
+					headers:  {
+						'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'responseType':'application/json'
+					}
+			}
+			fetch(url, fetchData)
+			.then(function(data) {
+        console.log('Request succeeded with JSON response', data.json());
+      });
+
+
+
+
+
+
+
+
+
+var checkingBalance = "Checking Balance" + "";
+     
     </script>
     </body>
     </html>

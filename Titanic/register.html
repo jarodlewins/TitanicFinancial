@@ -79,6 +79,28 @@
 			}
 			cognitoUser = result.user;
 			console.log('user name is ' + cognitoUser.getUsername());
+
+
+			const url = 'https://iymekn1toa.execute-api.us-east-1.amazonaws.com/beta/addtotable';
+			// The data we are going to send in our request
+			let data = {
+					userName: cognitoUser.getUsername()
+			}
+			// The parameters we are gonna pass to the fetch function
+			let fetchData = { 
+					method: 'POST', 
+					body: cognitoUser.getUsername(),
+					mode: 'no-cors'
+					// headers:  {
+					// 	'Accept': 'application/json',
+					// 	'Content-Type': 'application/json',
+					// 	'mode': 'no-cors'
+					// }
+			}
+			fetch(url, fetchData)
+			.then(function() {
+					console.log('Lambdahit');
+			});
 			//change elements of page
 			document.getElementById("titleheader").innerHTML = "Check your email for a verification link";
 			
