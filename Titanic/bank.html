@@ -8,13 +8,50 @@
     </head>
     <body>
 
-      <h1>Hello Welcome </h1>
+      <h1>Hello Welcome, <span id="myText"></span> </h1>
 
-      <h3 id="checkingBalance"></h3>
+      <h3 > Checking Balance: <span id="checkingBalance"></span> </h3>
+      <h3> Saving Balance: <span id="savingBalance"></span> </h3>
 
-      
+      <h1>Transfer</h1>
+<form action="/action_page.php">
+Destination:   <select>
+  <option value="volvo">Saving Account</option>
+  <option value="saab">Checking Account</option>
+ 
+</select><br>
+Amount: <input type="text" name="LastName" placeholder="$$"><br>
+<input type="submit" value="Submit">
+</form>
+
+<p>Click the "Submit" button and the form-data will be sent to a page on the server called "/action_page.php".</p>
+
+<h1>Deposit</h1>
+
+</select><br>
+Amount: <input type="text" name="LastName" placeholder="$$"><br>
+<input type="submit" value="Submit">
+</form>
 
 
+<h1>Withdraw</h1>
+
+</select><br>
+Amount: <input type="text" name="LastName" placeholder="$$"><br>
+<input type="submit" value="Submit">
+</form>
+
+<h1>Recurring Payment</h1>
+
+</select><br>
+Frequency:   <select>
+  <option value="volvo">2 days</option>
+  <option value="saab">4 days</option>
+ 
+</select><br>
+Amount: <input type="text" name="LastName" placeholder="$$"><br>
+<input type="submit" value="Submit">
+</form>
 
 
       
@@ -25,7 +62,8 @@
 var userName =  localStorage.getItem("userName");
 console.log("UserName is: " + userName);
 
-
+var user;
+var dataToUse = {};
 
 var proxyUrl = 'https://cors-anywhere.herokuapp.com/';
   
@@ -45,22 +83,26 @@ const url = proxyUrl + 'https://iymekn1toa.execute-api.us-east-1.amazonaws.com/b
             'Content-Type': 'application/json',
             'responseType':'application/json'
 					}
-			}
-			fetch(url, fetchData)
-			.then(function(data) {
-        console.log('Request succeeded with JSON response', data.json());
-      });
+      }
+    
+			let jsondata;    
+fetch(url,fetchData).then(
+        function(u){ return u.json();}
+      ).then(
+        function(json){
+          jsondata = json;
+
+          console.log(jsondata);
+          document.getElementById("myText").innerHTML = jsondata.userName;
+          document.getElementById("checkingBalance").innerHTML = jsondata.checkingBalance;
+          document.getElementById("savingBalance").innerHTML = jsondata.savingBalance;
 
 
 
+        }
+      )
 
 
-
-
-
-
-var checkingBalance = "Checking Balance" + "";
-     
     </script>
     </body>
     </html>
