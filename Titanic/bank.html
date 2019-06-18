@@ -1,24 +1,24 @@
 <DOCTYPE html>
-    <html>
-    <head>
-      <title>Vue Demo #1: The Box App</title>
-      <meta charset='utf-8' />
-      <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-      
-    </head>
-    <body>
+  <html>
+  <head>
+    <title>Vue Demo #1: The Box App</title>
+    <meta charset='utf-8' />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    
+  </head>
+  <body>
 
-      <h1>Hello Welcome, <span id="myText"></span> </h1>
+    <h1>Hello Welcome, <span id="myText"></span> </h1>
 
-      <h3 > Checking Balance: <span id="checkingBalance"></span> </h3>
-      <h3> Saving Balance: <span id="savingBalance"></span> </h3>
+    <h3 > Checking Balance: <span id="checkingBalance"></span> </h3>
+    <h3> Saving Balance: <span id="savingBalance"></span> </h3>
 
-      <h1>Transfer</h1>
+    <h1>Transfer</h1>
 <form action="/action_page.php">
 Destination:   <select>
-  <option value="volvo">Saving Account</option>
-  <option value="saab">Checking Account</option>
- 
+<option value="volvo">Saving Account</option>
+<option value="saab">Checking Account</option>
+
 </select><br>
 Amount: <input type="text" name="LastName" placeholder="$$"><br>
 <input type="submit" value="Submit">
@@ -29,8 +29,8 @@ Amount: <input type="text" name="LastName" placeholder="$$"><br>
 <h1>Deposit</h1>
 
 </select><br>
-Amount: <input type="text" name="LastName" placeholder="$$"><br>
-<input type="submit" value="Submit">
+Amount: <input id="depositAmount" type="text" name="depositAmount" placeholder="$$"><br>
+<input onclick="deposit()"  type="submit" value="Submit">
 </form>
 
 
@@ -45,64 +45,97 @@ Amount: <input type="text" name="LastName" placeholder="$$"><br>
 
 </select><br>
 Frequency:   <select>
-  <option value="volvo">2 days</option>
-  <option value="saab">4 days</option>
- 
+<option value="twoDay">2 days</option>
+<option value="fourDay">4 days</option>
+
 </select><br>
 Amount: <input type="text" name="LastName" placeholder="$$"><br>
 <input type="submit" value="Submit">
-</form>
 
 
-      
-    <!-- Our View App goes at the end of the document -->
-    <script>
 
-
+</form>  
+  <!-- Our View App goes at the end of the document -->
+  <script>
 var userName =  localStorage.getItem("userName");
 console.log("UserName is: " + userName);
-
 var user;
 var dataToUse = {};
-
 var proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-  
 
 const url = proxyUrl + 'https://iymekn1toa.execute-api.us-east-1.amazonaws.com/beta/getuserdata';
-			// The data we are going to send in our request
-			let data = {
-					userNameKey: userName
-			}
-			// The parameters we are gonna pass to the fetch function
-			let fetchData = { 
-					method: 'POST', 
-          body: data.userNameKey.toString(),
-          mode:'cors',
-					headers:  {
-						'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'responseType':'application/json'
-					}
-      }
-    
-			let jsondata;    
-fetch(url,fetchData).then(
-        function(u){ return u.json();}
-      ).then(
-        function(json){
-          jsondata = json;
-
-          console.log(jsondata);
-          document.getElementById("myText").innerHTML = jsondata.userName;
-          document.getElementById("checkingBalance").innerHTML = jsondata.checkingBalance;
-          document.getElementById("savingBalance").innerHTML = jsondata.savingBalance;
-
-
-
+    // The data we are going to send in our request
+    let data = {
+        userNameKey: userName
+    }
+    // The parameters we are gonna pass to the fetch function
+    let fetchData = { 
+        method: 'POST', 
+        body: data.userNameKey.toString(),
+        mode:'cors',
+        headers:  {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'responseType':'application/json'
         }
-      )
+    }
+  
+    let jsondata;    
+fetch(url,fetchData).then(
+      function(u){ return u.json();}
+    ).then(
+      function(json){
+        jsondata = json;
+        console.log(jsondata);
+        document.getElementById("myText").innerHTML = jsondata.userName;
+        document.getElementById("checkingBalance").innerHTML = jsondata.checkingBalance;
+        document.getElementById("savingBalance").innerHTML = jsondata.savingBalance;
+      }
+    )
 
+    function deposit() {
+      
+      var depositAmount = document.getElementById("depositAmount").value;
 
-    </script>
-    </body>
-    </html>
+      if(deposit.value != "") {
+        const url = 'https://cors-anywhere.herokuapp.com/' + 'https://iymekn1toa.execute-api.us-east-1.amazonaws.com/beta/addtotable/depositfunction';
+
+        var dictToPass = {
+          depositAmount: depositAmount,
+          user: localStorage.getItem("userName")
+        }
+        var formData = new FormData();
+      formData.append('depositAmount', depositAmount);
+      formData.append('user',localStorage.getItem("userName"));
+        let fetchData = { 
+        method: 'POST', 
+        
+        body: JSON.stringify(dictToPass),
+        // '{ "depositAmount" : ' + depositAmount 
+        mode:'cors',
+        headers:  {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'responseType':'application/json'
+        }
+    }
+
+    let jsondata;    
+fetch(url,fetchData).then(
+      function(u){ return u.json();}
+    ).then(
+      function(json){
+        jsondata = json;
+        console.log(jsondata);
+        //document.getElementById("myText").innerHTML = jsondata.userName;
+        document.getElementById("depositAmount").innerHTML = "";
+        document.getElementById("checkingBalance").innerHTML = jsondata.checkingBalance;
+      }
+    )
+      } else {
+        console.log("depositAmount is empty: ");
+      } 
+}
+  </script>
+  </body>
+  </html>
