@@ -31,7 +31,7 @@ Amount: <input type="text" id="transferAmount" name="transferAmount" placeholder
 
 </select><br>
 Amount: <input id="depositAmount" type="text" name="depositAmount" placeholder="$$"><br>
-<input type="submit" value="Submit">
+<input onclick = "deposit()" type="submit" value="Submit">
 </form>
 
 <h1>Withdraw</h1>
@@ -43,14 +43,14 @@ Amount: <input id="withdrawAmount" type="text" name="withdrawAmount" placeholder
 
 <h1>Recurring Payment</h1>
 
-</select><br>
-Frequency:   <select>
-<option value="twoDay">2 days</option>
-<option value="fourDay">4 days</option>
+<!--</select id = "frequencyOfRecurringPayment"><br>-->
+Frequency:   <select id = "frequencyOfRecurringPayment">
+<option value="48Hours">2 days</option>
+<option value="96Hours">4 days</option>
 
 </select><br>
-Amount: <input type="text" name="LastName" placeholder="$$"><br>
-<input type="submit" value="Submit">
+Amount: <input id = "recurringPaymentAmount" type="text" name="paymentAmount" placeholder="$$"><br>
+<input onclick="recurringPayment()" type="submit" value="Submit">
 
 
 
@@ -96,8 +96,7 @@ fetch(url,fetchData).then(
     function deposit() {
       
       var depositAmount = document.getElementById("depositAmount").value;
-      
-
+    
       if(deposit.value != "") {
         const url = 'https://cors-anywhere.herokuapp.com/' + 'https://iymekn1toa.execute-api.us-east-1.amazonaws.com/beta/addtotable/depositfunction';
 
@@ -192,7 +191,6 @@ function transfer() {
       console.log("transfer: " + transfer);
       console.log("fromAccount: " + fromAccount);
 
-
       if(transferAmount.value != "") {
         const url = 'https://cors-anywhere.herokuapp.com/' + "https://iymekn1toa.execute-api.us-east-1.amazonaws.com/beta/addtotable/transferfunction";
 
@@ -229,6 +227,50 @@ function transfer() {
     )
       } else {
         console.log("transferAmount is empty: " + withdrawAmount);
+      } 
+}
+
+function recurringPayment() {
+
+      
+      var recurringPaymentAmount = document.getElementById("recurringPaymentAmount").value;
+      var frequencyOfRecurringPayment = document.getElementById("frequencyOfRecurringPayment");
+      var frequency = frequencyOfRecurringPayment.value;
+      
+      if(deposit.value != "") {
+        const url = 'https://cors-anywhere.herokuapp.com/' + 'https://iymekn1toa.execute-api.us-east-1.amazonaws.com/beta/addtotable/recurringpayment';
+
+        var dictToPass = {
+          recurringPaymentAmount: recurringPaymentAmount,
+          frequency : frequency,
+          user: localStorage.getItem("userName")
+        }
+
+        let fetchData = { 
+        method: 'POST', 
+        body: JSON.stringify(dictToPass),
+        mode:'cors',
+        headers:  {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'responseType':'application/json'
+        }
+    }
+
+    let jsondata;    
+fetch(url,fetchData).then(
+      function(u){ return u.json();}
+    ).then(
+      function(json){
+        jsondata = json;
+        console.log(jsondata);
+        //document.getElementById("myText").innerHTML = jsondata.userName;
+        document.getElementById("recurringPaymentAmount").value = "";
+        document.getElementById("checkingBalance").innerHTML = jsondata.checkingBalance;
+      }
+    )
+      } else {
+        console.log("withdrawAmount is empty: " + withdrawAmount);
       } 
 }
 
