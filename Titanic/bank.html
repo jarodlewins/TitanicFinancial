@@ -9,36 +9,36 @@
   <body>
 
     <h1>Hello Welcome, <span id="myText"></span> </h1>
-
     <h3 > Checking Balance: <span id="checkingBalance"></span> </h3>
     <h3> Saving Balance: <span id="savingBalance"></span> </h3>
 
+
+
     <h1>Transfer</h1>
-<form action="/action_page.php">
-Destination:   <select>
-<option value="volvo">Saving Account</option>
-<option value="saab">Checking Account</option>
+
+<form  id="transferSelect" onsubmit="return false">
+Destination:   <select id = "transferAccount">
+<option value="savingBalance">Saving Account</option>
+<option value="checkingBalance">Checking Account</option>
 
 </select><br>
-Amount: <input type="text" name="LastName" placeholder="$$"><br>
-<input type="submit" value="Submit">
+Amount: <input type="text" id="transferAmount" name="transferAmount" placeholder="$$"><br>
+<input onclick="transfer()" type="submit" value="Submit">
 </form>
 
-<p>Click the "Submit" button and the form-data will be sent to a page on the server called "/action_page.php".</p>
 
 <h1>Deposit</h1>
 
 </select><br>
 Amount: <input id="depositAmount" type="text" name="depositAmount" placeholder="$$"><br>
-<input onclick="deposit()"  type="submit" value="Submit">
+<input type="submit" value="Submit">
 </form>
-
 
 <h1>Withdraw</h1>
 
 </select><br>
-Amount: <input type="text" name="LastName" placeholder="$$"><br>
-<input type="submit" value="Submit">
+Amount: <input id="withdrawAmount" type="text" name="withdrawAmount" placeholder="$$"><br>
+<input onclick="withdraw()" type="submit" value="Submit">
 </form>
 
 <h1>Recurring Payment</h1>
@@ -86,7 +86,7 @@ fetch(url,fetchData).then(
     ).then(
       function(json){
         jsondata = json;
-        console.log(jsondata);
+        console.log( jsondata);
         document.getElementById("myText").innerHTML = jsondata.userName;
         document.getElementById("checkingBalance").innerHTML = jsondata.checkingBalance;
         document.getElementById("savingBalance").innerHTML = jsondata.savingBalance;
@@ -96,6 +96,7 @@ fetch(url,fetchData).then(
     function deposit() {
       
       var depositAmount = document.getElementById("depositAmount").value;
+      
 
       if(deposit.value != "") {
         const url = 'https://cors-anywhere.herokuapp.com/' + 'https://iymekn1toa.execute-api.us-east-1.amazonaws.com/beta/addtotable/depositfunction';
@@ -126,9 +127,9 @@ fetch(url,fetchData).then(
     ).then(
       function(json){
         jsondata = json;
-        console.log(jsondata);
+        console.log( "DEPOSIT" + jsondata);
         //document.getElementById("myText").innerHTML = jsondata.userName;
-        document.getElementById("depositAmount").innerHTML = "";
+        document.getElementById("depositAmount").value = "";
         document.getElementById("checkingBalance").innerHTML = jsondata.checkingBalance;
       }
     )
@@ -136,6 +137,118 @@ fetch(url,fetchData).then(
         console.log("depositAmount is empty: ");
       } 
 }
+
+
+function withdraw() {
+      
+      var withdrawAmount = document.getElementById("withdrawAmount").value;
+
+      if(deposit.value != "") {
+        const url = 'https://cors-anywhere.herokuapp.com/' + 'https://iymekn1toa.execute-api.us-east-1.amazonaws.com/beta/addtotable/withdrawfunction';
+
+        var dictToPass = {
+          withdrawAmount: withdrawAmount,
+          user: localStorage.getItem("userName")
+        }
+
+        let fetchData = { 
+        method: 'POST', 
+        body: JSON.stringify(dictToPass),
+        // '{ "depositAmount" : ' + depositAmount 
+        mode:'cors',
+        headers:  {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'responseType':'application/json'
+        }
+    }
+
+    let jsondata;    
+fetch(url,fetchData).then(
+      function(u){ return u.json();}
+    ).then(
+      function(json){
+        jsondata = json;
+        console.log(jsondata);
+        //document.getElementById("myText").innerHTML = jsondata.userName;
+        document.getElementById("withdrawAmount").value = "";
+        document.getElementById("checkingBalance").innerHTML = jsondata.checkingBalance;
+      }
+    )
+      } else {
+        console.log("withdrawAmount is empty: " + withdrawAmount);
+      } 
+}
+
+
+function transfer() {
+  console.log('transferEXEC');
+      
+      var transferAmount = document.getElementById("transferAmount").value;
+      var transfer = document.getElementById("transferAccount");
+      var fromAccount = transfer.value;
+
+      console.log("transferAmount: " + transferAmount);
+      console.log("transfer: " + transfer);
+      console.log("fromAccount: " + fromAccount);
+
+
+      if(transferAmount.value != "") {
+        const url = 'https://cors-anywhere.herokuapp.com/' + "https://iymekn1toa.execute-api.us-east-1.amazonaws.com/beta/addtotable/transferfunction";
+
+        var dictToPass = {
+          transferAmount: transferAmount,
+          user: localStorage.getItem("userName"),
+          from: fromAccount
+        }
+
+        let fetchData = { 
+        method: 'POST', 
+        body: JSON.stringify(dictToPass),
+        mode:'cors',
+        headers:  {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'responseType':'application/json'
+        }
+    }
+
+    let jsondata;    
+
+    fetch(url,fetchData).then(
+      function(u){ return u.json();}
+    ).then(
+      function(json){
+        jsondata = json;
+        console.log(jsondata);
+        //document.getElementById("myText").innerHTML = jsondata.userName;
+       document.getElementById("transferAmount").value = "";
+       document.getElementById("checkingBalance").innerHTML = jsondata.checkingBalance;
+       document.getElementById("savingBalance").innerHTML = jsondata.savingBalance;
+      }
+    )
+      } else {
+        console.log("transferAmount is empty: " + withdrawAmount);
+      } 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   </script>
   </body>
   </html>
