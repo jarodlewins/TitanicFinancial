@@ -30,23 +30,11 @@
 		<input type="password" class="form-control" id="confirmationpassword"pattern=".*" required>
 		<button id="mainbutton" class="btn btn-lg btn-primary btn-block" type="button" onclick="registerButton()" >Register</button>
 		<a href="login.html">Already have an account? Log in</a>
+
+
+
+
 	</div>
-
-
-
-	<h1>Transfer</h1>
-<form action="/action_page.php">
-Destination:   <select>
-  <option value="volvo">Saving Account</option>
-  <option value="saab">Checking Account</option>
- 
-</select><br>
-Amount: <input type="text" name="LastName" placeholder="$$"><br>
-<input type="submit" value="Submit">
-</form>
-
-<p>Click the "Submit" button and the form-data will be sent to a page on the server called "/action_page.php".</p>
-
 
 	<script>
 		var username;
@@ -85,7 +73,6 @@ Amount: <input type="text" name="LastName" placeholder="$$"><br>
 		var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
 		var attributePersonalName = new AmazonCognitoIdentity.CognitoUserAttribute(dataPersonalName);
 		
-		
 		attributeList.push(attributeEmail);
 		attributeList.push(attributePersonalName);
 		userPool.signUp(username, password, attributeList, null, function(err, result){
@@ -95,7 +82,6 @@ Amount: <input type="text" name="LastName" placeholder="$$"><br>
 			}
 			cognitoUser = result.user;
 			console.log('user name is ' + cognitoUser.getUsername());
-
 
 			const url = 'https://iymekn1toa.execute-api.us-east-1.amazonaws.com/beta/addtotable';
 			// The data we are going to send in our request
@@ -119,12 +105,14 @@ Amount: <input type="text" name="LastName" placeholder="$$"><br>
 			});
 			//change elements of page
 			document.getElementById("titleheader").innerHTML = "Check your email for a verification link";
-			
+			document.getElementById("personalnameRegister").value = "";
+			document.getElementById("emailInputRegister").value = "";
+			document.getElementById("passwordInputRegister").value = "";
+			document.getElementById("confirmationpassword").value = "";
+
 		});
 	}
-	
 	</script>
- 
  </body>
   
 </html>
