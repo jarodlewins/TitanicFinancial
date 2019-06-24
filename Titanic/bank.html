@@ -1,60 +1,103 @@
 <DOCTYPE html>
-  <html>
-  <head>
-    <title>Vue Demo #1: The Box App</title>
-    <meta charset='utf-8' />
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    
-  </head>
-  <body>
+    <html>
+    <head>
+	  <link rel="stylesheet" type="text/css" href="titanicfin.css">
+      <link href="https://fonts.googleapis.com/css?family=Anaheim&display=swap" rel="stylesheet">
+      <meta charset="utf-8">
+      <title>Titanic Home</title>
+      <meta charset='utf-8' />
+    </head>
+	<body>
+		<div class="header">
+			<h1 style="overflow:hidden;">Titanic Financial</h1>
+		</div>
+		<div class="balance">
+		  <h1>Welcome, <span id="myText"></span> </h1>
+		  <br>
+		  <h3> Checking Balance: <span id="checkingBalance"></span> </h3>
+		  <h3> Saving Balance: <span id="savingBalance"></span> </h3>
+		  <br>
+		  <h1>Transaction History </h1>
+		  
+		  <br>
+		  <p><span id = "timestamp1"></span></p>
+		  <p>Transaction Type: <span id = "action1"></span></p>
+		  <p>Amount: $<span id = "amount1"></span></p>
+		  <br>
+		  
+		</div>
+		<div class="sidebar">
+		
+		
+		  <button onclick="document.getElementById('id01').style.display='block'" style="width:92%;">Transfer</button>
+			<div id="id01" class="modal">
+			  <form class="modal-content animate">
+				<div class="container">
+				  <h1>Transfer Funds</h1>
+				  <form  id="transferSelect" onsubmit="return false">
+				  Destination:   <select id = "transferAccount">
+				    <option value="savingBalance">Saving Account</option>
+				    <option value="checkingBalance">Checking Account</option>
+				  </select>
+				  <br>
+				  Amount: <input type="text" id="transferAmount" name="transferAmount" placeholder="$$">
+				  <br>
+				  <input onclick="transfer()" type="submit" value="Submit" style="width: 150px;">
+				  <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+				  </form>
+				</div>
+			  </form>
+			</div>
+				
 
-      <div id="loader"></div>
+		  <button onclick="document.getElementById('id02').style.display='block'" style="width:92%;">Deposit</button>
+			<div id="id02" class="modal">
+			  <form class="modal-content animate">
+				<div class="container">
+				  <h1>Deposit</h1>
+				  <br>
+				  Amount: <input id="depositAmount" type="number" name="depositAmount" placeholder="$$"><br>
+				  <input onclick ="deposit()" type="submit" value="Submit" style="width: 150px">
+				  <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
+				</div>
+			  </form>
+			</div>
+				
+				
+		  <button onclick="document.getElementById('id03').style.display='block'" style="width:92%;">Withdraw</button>
+		    <div id="id03" class="modal">
+			  <form class="modal-content animate">
+			    <div class="container">
+				  <h1>Withdraw</h1>
+				  <br>
+				  Amount: <input id="withdrawAmount" type="text" name="withdrawAmount" placeholder="$$"><br>
+				  <input onclick = "withdraw()" type="submit" value="Submit" style="width: 150px" >
+				  <button type="button" onclick="document.getElementById('id03').style.display='none'" class="cancelbtn">Cancel</button>
+				</div>
+			  </form>
+			</div>
+			
+		  <button onclick="document.getElementById('id04').style.display='block'" style="width:92%;">Recurring Payment</button>
+		    <div id="id04" class="modal">
+			  <form class="modal-content animate">
+			    <div class="container">
+				  <h1>Recurring Payment</h1>
 
-    <h1>Hello Welcome, <span id="myText"></span> </h1>
-    <h3 > Checking Balance: <span id="checkingBalance"></span> </h3>
-    <h3> Saving Balance: <span id="savingBalance"></span> </h3>
-
-    <h1>Transfer</h1>
-
-<form  id="transferSelect" onsubmit="return false">
-Destination:   <select id = "transferAccount">
-<option value="savingBalance">Saving Account</option>
-<option value="checkingBalance">Checking Account</option>
-
-</select><br>
-Amount: <input type="text" id="transferAmount" name="transferAmount" placeholder="$$"><br>
-<input onclick="transfer()" type="submit" value="Submit">
-</form>
-
-
-<h1>Deposit</h1>
-
-</select><br>
-Amount: <input id="depositAmount" type="text" name="depositAmount" placeholder="$$"><br>
-<input onclick = "deposit()" type="submit" value="Submit">
-</form>
-
-<h1>Withdraw</h1>
-
-</select><br>
-Amount: <input id="withdrawAmount" type="text" name="withdrawAmount" placeholder="$$"><br>
-<input onclick="withdraw()" type="submit" value="Submit">
-</form>
-
-<h1>Recurring Payment</h1>
-
-<!--</select id = "frequencyOfRecurringPayment"><br>-->
-Frequency:   <select id = "frequencyOfRecurringPayment">
-<option value="48Hours">2 days</option>
-<option value="96Hours">4 days</option>
-
-</select><br>
-Amount: <input id = "recurringPaymentAmount" type="text" name="paymentAmount" placeholder="$$"><br>
-<input onclick="recurringPayment()" type="submit" value="Submit">
-
-</form>  
-  <!-- Our View App goes at the end of the document -->
-  <script>
+				  <br>
+				  <p>Frequency:</p>   
+				  <select>
+					<option value="volvo">2 days</option>
+					<option value="saab">4 days</option>
+				  </select><br>
+			 
+				  Amount: <input type="text" name="LastName" placeholder="$$"><br>
+				  <input type="submit" value="Submit" >
+				  <button type="button" onclick="document.getElementById('id04').style.display='none'" class="cancelbtn">Cancel</button>
+				</div>
+			  </form>
+			</div>
+		</div>
+  <script type="text/javascript">
 var userName =  localStorage.getItem("userName");
 console.log("UserName is: " + userName);
 var user;
@@ -84,19 +127,33 @@ fetch(url,fetchData).then(
     ).then(
       function(json){
         jsondata = json;
-        console.log( jsondata);
+		buh = 1;
+		length = jsondata.transactionHistory.length
+        console.log(jsondata);
         document.getElementById("myText").innerHTML = jsondata.userName;
         document.getElementById("checkingBalance").innerHTML = jsondata.checkingBalance;
         document.getElementById("savingBalance").innerHTML = jsondata.savingBalance;
-        document.getElementById("loader").style.display = "none";
+		for(i = length - 1; i >= length - 11; i--)
+		{
+		  document.getElementById("action" + buh).innerHTML = jsondata.transactionHistory[i].action;
+		  if(jsondata.transactionHistory[i].hasOwnProperty("depositAmount"))
+			document.getElementById("amount" + buh).innerHTML = jsondata.transactionHistory[i].depositAmount;
+		  if(jsondata.transactionHistory[i].hasOwnProperty("transferAmount"))
+		    document.getElementById("amount" + buh).innerHTML = jsondata.transactionHistory[i].transferAmount;
+		  if(jsondata.transactionHistory[i].hasOwnProperty("withdrawAmount"))
+		    document.getElementById("amount" + buh).innerHTML = jsondata.transactionHistory[i].withdrawAmount;
+		  document.getElementById("timestamp" + buh).innerHTML = new Date(jsondata.transactionHistory[i].timestamp);
+		  buh++;
+		  console.log(buh);
+		}
       }
     )
 
     function deposit() {
       
-      var depositAmount = document.getElementById("depositAmount").value;
-    
-      if(deposit.value != "") {
+      var depositAmount = document.getElementById("depositAmount");
+	  console.log("opened deposit");
+      if(depositAmount > 0) {
         const url = 'https://cors-anywhere.herokuapp.com/' + 'https://iymekn1toa.execute-api.us-east-1.amazonaws.com/beta/addtotable/depositfunction';
 
         var dictToPass = {
@@ -132,7 +189,7 @@ fetch(url,fetchData).then(
       }
     )
       } else {
-        console.log("depositAmount is empty: ");
+        console.log("depositAmount is invalid ");
       } 
 }
 
@@ -140,10 +197,10 @@ fetch(url,fetchData).then(
 function withdraw() {
       
       var withdrawAmount = document.getElementById("withdrawAmount").value;
-
+		console.log('runit')
       if(deposit.value != "") {
         const url = 'https://cors-anywhere.herokuapp.com/' + 'https://iymekn1toa.execute-api.us-east-1.amazonaws.com/beta/addtotable/withdrawfunction';
-
+		console.log(url)
         var dictToPass = {
           withdrawAmount: withdrawAmount,
           user: localStorage.getItem("userName")
@@ -274,60 +331,5 @@ fetch(url,fetchData).then(
 }
 
   </script>
-
-
-<style>
-    /* Center the loader */
-    #loader {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      z-index: 1;
-      width: 150px;
-      height: 150px;
-      margin: -75px 0 0 -75px;
-      border: 16px solid #f3f3f3;
-      border-radius: 50%;
-      border-top: 16px solid #3498db;
-      width: 120px;
-      height: 120px;
-      -webkit-animation: spin 2s linear infinite;
-      animation: spin 2s linear infinite;
-    }
-    
-    @-webkit-keyframes spin {
-      0% { -webkit-transform: rotate(0deg); }
-      100% { -webkit-transform: rotate(360deg); }
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    /* Add animation to "page content" */
-    .animate-bottom {
-      position: relative;
-      -webkit-animation-name: animatebottom;
-      -webkit-animation-duration: 1s;
-      animation-name: animatebottom;
-      animation-duration: 1s
-    }
-    
-    @-webkit-keyframes animatebottom {
-      from { bottom:-100px; opacity:0 } 
-      to { bottom:0px; opacity:1 }
-    }
-    
-    @keyframes animatebottom { 
-      from{ bottom:-100px; opacity:0 } 
-      to{ bottom:0; opacity:1 }
-    }
-    
-    #myDiv {
-      display: none;
-      text-align: center;
-    }
-    </style>
   </body>
   </html>
